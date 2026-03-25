@@ -32,9 +32,15 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     }
 
     if (!user) {
-        // Redirect admins to admin login, students to student login
-        const isAdminPath = location.pathname.startsWith('/admin');
-        return <Navigate to={isAdminPath ? '/admin/login' : '/login'} state={{ from: location }} replace />;
+        // Route to correct login based on path prefix
+        const path = location.pathname;
+        if (path.startsWith('/dean')) return <Navigate to="/login/dean" replace />;
+        if (path.startsWith('/director')) return <Navigate to="/login/director" replace />;
+        if (path.startsWith('/program-chair')) return <Navigate to="/login/program-chair" replace />;
+        if (path.startsWith('/faculty')) return <Navigate to="/login/faculty" replace />;
+        if (path.startsWith('/placement')) return <Navigate to="/login/placement-officer" replace />;
+        if (path.startsWith('/admin')) return <Navigate to="/login/admin" replace />;
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
     // Role-based logic

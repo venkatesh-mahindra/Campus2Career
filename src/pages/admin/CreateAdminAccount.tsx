@@ -8,12 +8,12 @@ import {
 } from 'lucide-react';
 
 const DEMO_ACCOUNTS = [
-    { role: 'system_admin', label: 'System Admin', email: 'sysadmin@nmims.edu', password: 'SysAdmin@2025', name: 'System Administrator', icon: ServerCog, color: 'text-rose-500' },
-    { role: 'dean', label: 'Dean', email: 'dean@nmims.edu', password: 'Dean@2025', name: 'Dr. Dean NMIMS', icon: Landmark, color: 'text-purple-500' },
-    { role: 'director', label: 'Director', email: 'director@nmims.edu', password: 'Director@2025', name: 'Dr. Director NMIMS', icon: Target, color: 'text-blue-500' },
-    { role: 'program_chair', label: 'Program Chair', email: 'programchair@nmims.edu', password: 'ProgramChair@2025', name: 'Prof. Program Chair', icon: BookOpen, color: 'text-amber-500' },
-    { role: 'faculty', label: 'Faculty', email: 'faculty@nmims.edu', password: 'Faculty@2025', name: 'Prof. Faculty Member', icon: UserCheck, color: 'text-emerald-500' },
-    { role: 'placement_officer', label: 'Placement Officer', email: 'placement@nmims.edu', password: 'Placement@2025', name: 'Placement Officer', icon: Handshake, color: 'text-cyan-500' },
+    { role: 'system_admin', label: 'System Admin', email: 'admin@c2c.com', password: 'admin123', name: 'System Administrator', icon: ServerCog, color: 'text-rose-500' },
+    { role: 'dean', label: 'Dean', email: 'dean@c2c.com', password: 'dean123', name: 'Dr. Dean NMIMS', icon: Landmark, color: 'text-purple-500' },
+    { role: 'director', label: 'Director', email: 'director@c2c.com', password: 'director123', name: 'Dr. Director NMIMS', icon: Target, color: 'text-blue-500' },
+    { role: 'program_chair', label: 'Program Chair', email: 'program@c2c.com', password: 'program123', name: 'Prof. Program Chair', icon: BookOpen, color: 'text-amber-500' },
+    { role: 'faculty', label: 'Faculty', email: 'faculty@c2c.com', password: 'faculty123', name: 'Prof. Faculty Member', icon: UserCheck, color: 'text-emerald-500' },
+    { role: 'placement_officer', label: 'Placement Officer', email: 'placement@c2c.com', password: 'placement123', name: 'Placement Officer', icon: Handshake, color: 'text-cyan-500' },
 ];
 
 type AccountStatus = 'idle' | 'creating' | 'success' | 'error' | 'exists';
