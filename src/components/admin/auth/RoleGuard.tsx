@@ -13,6 +13,9 @@ interface RoleGuardProps {
 export const RoleGuard: React.FC<RoleGuardProps> = ({ children, allowedRoles }) => {
     const { user } = useAuth();
 
+    // Mock users (preview mode) bypass role checks
+    if (user?.uid?.startsWith('mock-')) return <>{children}</>;
+
     if (!canAccessRoute(user, allowedRoles)) {
         return (
             <div className="p-6">

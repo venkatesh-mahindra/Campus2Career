@@ -18,6 +18,7 @@ interface AuthContextType {
     isAdmin: boolean;
     login: (sapId: string, password: string) => Promise<void>;
     adminLogin: (email: string, password: string) => Promise<void>;
+    mockLogin: (role: string, name: string, email: string) => void;
     signup: (data: any) => Promise<void>;
     logout: () => Promise<void>;
     refreshUser: () => Promise<void>;
@@ -114,6 +115,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // Mock login — bypasses Firebase for UI preview
+    const mockLogin = (role: string, name: string, email: string) => {
+        const mockUser: AppUser = {
+            uid: 'mock-' + role,
+            email,
+            name,
+            role: role as any,
+        };
+        setUser(mockUser);
+        localStorage.setItem('c2c_user', JSON.stringify(mockUser));
     };
 
     // Admin Login via Email directly
@@ -242,7 +255,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return (
         <AuthContext.Provider value={{
             user, isLoading, isAuthenticated, isAdmin,
-            login, adminLogin, signup, logout, refreshUser, updateUser
+            login, adminLogin, mockLogin, signup, logout, refreshUser, updateUser
         }}>
             {children}
         </AuthContext.Provider>

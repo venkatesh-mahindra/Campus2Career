@@ -32,7 +32,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     }
 
     if (!user) {
-        // Route to correct login based on path prefix
         const path = location.pathname;
         if (path.startsWith('/dean')) return <Navigate to="/login/dean" replace />;
         if (path.startsWith('/director')) return <Navigate to="/login/director" replace />;
@@ -43,16 +42,17 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    // Role-based logic
+    // Mock users (preview mode) bypass all role/onboarding checks
+    const isMockUser = user.uid?.startsWith('mock-');
+    if (isMockUser) return <>{children}</>;
+
     const isUserAdmin = user.role && user.role !== 'student';
 
     if (allowedRole === 'admin' && !isUserAdmin) {
-        // Student trying to access admin pages
         return <Navigate to="/student/dashboard" replace />;
     }
 
     if (allowedRole === 'student' && isUserAdmin) {
-        // Admin trying to access student pages
         return <Navigate to="/admin/dashboard" replace />;
     }
 
@@ -60,36 +60,28 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     const isProfileSetupDone = user.profileCompleted === true;
     const isAssessmentDone = user.assessmentCompleted === true;
 
-    // Student specific requirement checks (admins bypass this)
     if (!isUserAdmin) {
-        // Reverse checking for onboarding forms (if they try to visit it again after doing it)
         if (location.pathname === '/career-discovery' && isCareerDiscoveryDone) {
             if (!isProfileSetupDone) return <Navigate to="/student/profile-setup" replace />;
             if (!isAssessmentDone) return <Navigate to="/student/assessment" replace />;
             return <Navigate to="/student/dashboard" replace />;
         }
-
         if (location.pathname === '/student/profile-setup' && isProfileSetupDone) {
             if (!isAssessmentDone) return <Navigate to="/student/assessment" replace />;
             return <Navigate to="/student/dashboard" replace />;
         }
-
         if (location.pathname === '/student/assessment' && isAssessmentDone) {
             return <Navigate to="/student/dashboard" replace />;
         }
-
-        // Forward checks (prevent visiting dashboard while setup is incomplete)
         if (requireAssessment && !isAssessmentDone) {
             if (!isCareerDiscoveryDone) return <Navigate to="/career-discovery" replace />;
             if (!isProfileSetupDone) return <Navigate to="/student/profile-setup" replace />;
             return <Navigate to="/student/assessment" replace />;
         }
-
         if (requireProfileSetup && !isProfileSetupDone) {
             if (!isCareerDiscoveryDone) return <Navigate to="/career-discovery" replace />;
             return <Navigate to="/student/profile-setup" replace />;
         }
-
         if (requireCareerDiscovery && !isCareerDiscoveryDone) {
             return <Navigate to="/career-discovery" replace />;
         }
@@ -98,7 +90,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <>{children}</>;
 };
 
-// GuestRoute ensures logged in users can't see the login/signup page again
 export const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user, isLoading } = useAuth();
 
@@ -112,10 +103,7 @@ export const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }
         );
     }
 
-    if (user) {
-        // Redirect to switch account page instead of auto-redirecting
-        return <Navigate to="/switch-account" replace />;
-    }
+    if (user) return <Navigate to="/switch-account" replace />;
 
     return <>{children}</>;
 };
